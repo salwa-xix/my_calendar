@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+
+
+  <meta charset="UTF-8">
+  <title>التقويم الدراسي </title>
+  <style>
+   body {
+  background-color: white;
+  font-family: 'Cairo', 'Segoe UI', sans-serif;
+  padding: 20px;
+  color: #333;
+}
+
+
+    .color-picker {
+      margin-bottom: 20px;
+    }
+
+    .calendar-page {
+      page-break-after: always;
+      margin-bottom: 40px;
+      position: relative;
+    }
+
+    .month {
+      padding: 15px;
+      position: relative;
+    }
+
+    .month h2 {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 24px;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      border-bottom: 2px solid #004e7c;
+      padding-bottom: 5px;
+    }
+
+    .month .quote {
+      text-align: center;
+      font-size: 14px;
+      color: gray;
+      margin-bottom: 10px;
+    }
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 6px; /* المسافة بين كل مربع ومربع */
+  table-layout: fixed;
+}
+
+
+th, td {
+  height: 80px;
+  text-align: center;
+  vertical-align: top;
+  font-size: 10px;
+  font-weight: normal;
+  border-top: 2px solid #ccc; /* خط علوي خفيف */
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
+}
+
+th {
+  font-weight: bold;
+  
+}
+
+    .notes-area {
+      height: 100px;
+      margin-top: 30px;
+      border: 1px solid #ccc;
+      background-image: radial-gradient(#888 0.5px, transparent 0.5px);
+      background-size: 10px 10px;
+    }
+
+    #downloadBtn {
+      margin: 20px 0;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+ .note-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 20px;
+  direction: ltr; /* مهم عشان Note تكون يمين فعليًا */
+}
+
+.note-right {
+  font-weight: bold;
+}
+
+.x-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  direction: ltr; /* يخلي الحساب يقرأ من اليسار لليمين */
+}
+
+.salwa {
+  text-transform: none;
+  font-size: 16px;
+}
+
+.icon {
+  font-size: 18px;
+  color: black;
+}
+
+
+.button {
+  display: inline-block;
+  text-decoration: none;
+  text-align: center;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  min-width: 50px;
+  cursor: pointer;
+  margin-inline-end: 10px;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+#downloadBtn {
+  background-color: #007bff81;
+}
+
+#downloadBtn:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+#kauBtn {
+  background-color: #14532d7d;
+}
+
+#kauBtn:hover {
+  background-color: #2452359e;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+
+
+.dynamic-color {
+  color: var(--main-color, #4b6cb7);
+  transition: color 0.3s ease;
+}
+
+
+
+
+.button-group {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.modern-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #3b5998, #5dade2); /* أزرق غامق إلى أزرق سماوي */
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.15),
+    0 4px 10px rgba(59, 89, 152, 0.2); /* ظل خارجي */
+  transition: all 0.3s ease-in-out;
+}
+
+.modern-button:hover {
+  background: linear-gradient(135deg, #2c3e75, #3498db); /* أغمق عند التحويم */
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.2),
+    0 6px 16px rgba(52, 152, 219, 0.3);
+}
+
+.modern-button i {
+  font-size: 16px;
+}
+
+
+.design-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  border-radius: 14px;
+  background-color: #f8f9fc;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.03);
+  max-width: 100%;
+  margin: 0 auto; /* هذا يخليها بالوسط */
+}
+
+.design-label {
+  font-weight: 600;
+  font-size: 15px;
+  color: #2c3e50;
+}
+
+.design-link {
+  background: linear-gradient(135deg, #5dade2, #3498db);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.3s ease-in-out;
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.15),
+    0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.design-link:hover {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  transform: translateY(-2px);
+  box-shadow:
+    0 4px 12px rgba(41, 128, 185, 0.25);
+}
+
+
+.dynamic-color {
+  color: var(--main-color, #4b6cb7);
+  transition: color 0.3s ease;
+}
+
+.month h2 {
+  display: none; /* نخفي التصميم القديم */
+}
+
+.month-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.month-names {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-weight: bold;
+  font-size: 22px;
+  color: var(--main-color);
+  gap: 4px;
+}
+
+.month-names .ar {
+  font-family: 'Cairo', sans-serif;
+  font-size: 16px;
+  color: #666;
+}
+
+.month-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.month-meta .quote {
+  font-family: 'Cairo', sans-serif;
+  font-size: 14px;
+  color: gray;
+  text-align: left;
+}
+
+.month-meta .x-container {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+
+th {
+  border: none !important; /* لا حدود */
+  background-color: transparent; /* خلفية شفافة */
+  
+}
+
+
+.calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 2px  var(--main-color, #4b6cb7); /* خط متقطع */
+  color: var(--main-color, #4b6cb7);
+  max-width: 100%;
+}
+
+td, th, .quote, .salwa, .design-link, .note-bar, .modern-button {
+  font-family: 'Cairo', 'Segoe UI', sans-serif;
+}
+
+
+td {
+  height: 80px;
+  font-size: 10px;
+  font-weight: normal;
+  text-align: right;         /* لليمين */
+  vertical-align: top;       /* لأعلى */
+  padding: 4px 6px;          /* مسافة بسيطة من فوق واليمين */
+  border-top: 1px solid #ccc;  /* خط علوي متقطع أنيق */
+  background-color: #fff;
+}
+
+
+.note-a{
+
+  display: block;
+  text-align: center;
+  font-size: 12px;
+  color: #888;
+  margin-top: 6px;
+
+}
+
+.month {
+  border: 1px solid #ddd;         /* الإطار */
+  border-radius: 12px;            /* الزوايا ناعمة */
+  padding: 20px;                  /* مسافة داخلية مريحة */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* ظل خفيف */
+  background-color: #fff;         /* تأكيد الخلفية */
+  margin-top: 10px;
+}
+
+.last-row td {
+  height: 40px; /* أصغر من الباقي */
+}
+
+.last-row .smaller-cell {
+  height: 40px;
+}
+
+.last-row .empty-cell {
+
+  height: 40px;
+
+}
+
+
+.controls-wrapper {
+  font-family: 'Cairo', sans-serif !important;
+}
+
+
+  </style>
+</head>
+<body>
+
+<!-- ✅ أزرار بشكل أنيق -->
+<div class="controls-wrapper">
+  <!-- اختيار اللون -->
+  <div class="color-card">
+    <label for="color"> لون التقويم:🎨</label>
+    <input type="color" id="color" value="#4b6cb7">
+  </div>
+
+  <!-- تحميل PDF -->
+  <button id="downloadBtn" class="modern-button">
+    <i class="fas fa-download"></i> تحميل PDF
+  </button>
+
+  <!-- رابط KAU -->
+  <a href="https://kau.edu.sa" target="_blank" id="kauBtn" class="modern-button">
+    <i class="fas fa-university"></i> KAU
+  </a>
+
+
+  <div class="design-links">
+  <span class="design-label"></span>
+  <a href="#" class="design-link">Design 1</a>
+  <a href="cal.html" class="design-link">Design 2</a>
+  <a href="cal copy 2.html" class="design-link">Design 3</a>
+  <a href="cal copy 3.html" class="design-link">Design 4</a>
+</div>
+
+</div>
+
+
+  <div id="content">
+    <div class="calendar-page">
+      <div class="month" id="january">
+<div class="month-header">
+  <div class="month-names">
+    <span class="en">JANUARY 2025</span>
+    <span class="ar">رجب - شعبان</span>
+  </div>
+  <div class="month-meta">
+     <div class="x-container">
+      <i class="fab fa-x-twitter icon"></i>
+      <span class="salwa dynamic-color">@Salwa_xi</span>
+    </div>
+    <div class="quote">سبحان الله وبحمده سبحان الله العظيم</div>
+   
+  </div>
+</div>
+<br>
+        <table>
+         <div class="calendar-days">
+  <div>Sun</div>
+  <div>Mon</div>
+  <div>Tue</div>
+  <div>Wed</div>
+  <div>Thu</div>
+  <div>Fri</div>
+  <div>Sat</div>
+</div>
+
+          <tbody>
+            <tr><td></td><td></td><td></td><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+            <tr><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11<span class="note-a">إجازة منتصف الفصل</span></td></tr>
+            <tr><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td></tr>
+            <tr><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td><td>24</td><td>25</td></tr>
+<tr class="last-row">
+  <td>26</td><td>27</td><td>28</td><td>29</td><td>30</td><td class="smaller-cell">31</td><td class="empty-cell"></td>
+</tr>
+          </tbody>
+        </table>
+<div class="table-underline"></div>
+
+
+
+
+
+
+    
+      </div>
+    </div>
+
+
+
+
+
+   
+ 
+
+
+
+
+
+
+     <div class="calendar-page">
+      <div class="month" id="january">
+<div class="month-header">
+  <div class="month-names">
+    <span class="en">JANUARY 2025</span>
+    <span class="ar">رجب - شعبان</span>
+  </div>
+  <div class="month-meta">
+     <div class="x-container">
+      <i class="fab fa-x-twitter icon"></i>
+      <span class="salwa dynamic-color">@Salwa_xi</span>
+    </div>
+    <div class="quote">سبحان الله وبحمده سبحان الله العظيم</div>
+   
+  </div>
+</div>
+<br>
+        <table>
+         <div class="calendar-days">
+  <div>Sun</div>
+  <div>Mon</div>
+  <div>Tue</div>
+  <div>Wed</div>
+  <div>Thu</div>
+  <div>Fri</div>
+  <div>Sat</div>
+</div>
+
+          <tbody>
+            <tr><td></td><td></td><td></td><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+            <tr><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11<span class="note-a">إجازة منتصف الفصل</span></td></tr>
+            <tr><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td></tr>
+            <tr><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td><td>24</td><td>25</td></tr>
+<tr class="last-row">
+  <td>26</td><td>27</td><td>28</td><td>29</td><td>30</td><td class="smaller-cell">31</td><td class="empty-cell"></td>
+</tr>
+          </tbody>
+        </table>
+<div class="table-underline"></div>
+
+
+
+
+
+
+    
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+     <div class="calendar-page">
+      <div class="month" id="january">
+<div class="month-header">
+  <div class="month-names">
+    <span class="en">JANUARY 2025</span>
+    <span class="ar">رجب - شعبان</span>
+  </div>
+  <div class="month-meta">
+     <div class="x-container">
+      <i class="fab fa-x-twitter icon"></i>
+      <span class="salwa dynamic-color">@Salwa_xi</span>
+    </div>
+    <div class="quote">سبحان الله وبحمده سبحان الله العظيم</div>
+   
+  </div>
+</div>
+<br>
+        <table>
+         <div class="calendar-days">
+  <div>Sun</div>
+  <div>Mon</div>
+  <div>Tue</div>
+  <div>Wed</div>
+  <div>Thu</div>
+  <div>Fri</div>
+  <div>Sat</div>
+</div>
+
+          <tbody>
+            <tr><td></td><td></td><td></td><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+            <tr><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11<span class="note-a">إجازة منتصف الفصل</span></td></tr>
+            <tr><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td></tr>
+            <tr><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td><td>24</td><td>25</td></tr>
+<tr class="last-row">
+  <td>26</td><td>27</td><td>28</td><td>29</td><td>30</td><td class="smaller-cell">31</td><td class="empty-cell"></td>
+</tr>
+          </tbody>
+        </table>
+<div class="table-underline"></div>
+
+
+
+
+
+
+    
+      </div>
+    </div>
+
+
+
+
+
+
+
+     <div class="calendar-page">
+      <div class="month" id="january">
+<div class="month-header">
+  <div class="month-names">
+    <span class="en">JANUARY 2025</span>
+    <span class="ar">رجب - شعبان</span>
+  </div>
+  <div class="month-meta">
+     <div class="x-container">
+      <i class="fab fa-x-twitter icon"></i>
+      <span class="salwa dynamic-color">@Salwa_xi</span>
+    </div>
+    <div class="quote">سبحان الله وبحمده سبحان الله العظيم</div>
+   
+  </div>
+</div>
+<br>
+        <table>
+         <div class="calendar-days">
+  <div>Sun</div>
+  <div>Mon</div>
+  <div>Tue</div>
+  <div>Wed</div>
+  <div>Thu</div>
+  <div>Fri</div>
+  <div>Sat</div>
+</div>
+
+          <tbody>
+            <tr><td></td><td></td><td></td><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+            <tr><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11<span class="note-a">إجازة منتصف الفصل</span></td></tr>
+            <tr><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td></tr>
+            <tr><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td><td>24</td><td>25</td></tr>
+<tr class="last-row">
+  <td>26</td><td>27</td><td>28</td><td>29</td><td>30</td><td class="smaller-cell">31</td><td class="empty-cell"></td>
+</tr>
+          </tbody>
+        </table>
+<div class="table-underline"></div>
+
+
+
+
+
+
+    
+      </div>
+    </div>
+
+
+
+
+
+
+    
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+  <script>
+    const colorInput = document.getElementById("color");
+
+    function applyColor() {
+      const color = colorInput.value;
+      document.querySelectorAll(".month").forEach(month => {
+        month.style.borderColor = color;
+      });
+      document.querySelectorAll("th, td").forEach(cell => {
+        cell.style.color = color;
+        cell.style.borderColor = color;
+      });
+      document.querySelectorAll(".month h2").forEach(h => {
+        h.style.color = color;
+        h.style.borderBottomColor = color;
+      });
+      document.documentElement.style.setProperty('--main-color', color);
+
+
+   const allIcons = document.querySelectorAll(".icon");
+allIcons.forEach(icon => {
+  icon.style.color = color;
+});
+    }
+
+    colorInput.addEventListener("input", applyColor);
+
+    document.getElementById("downloadBtn").addEventListener("click", () => {
+      const element = document.getElementById("content");
+      const opt = {
+        margin: 0.5,
+        filename: 'my_calendar.pdf',
+        image: { type: 'jpeg', quality: 1 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
+      };
+      html2pdf().set(opt).from(element).save();
+    });
+
+    applyColor();
+  </script>
+</body>
+</html>
