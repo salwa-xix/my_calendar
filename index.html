@@ -377,6 +377,33 @@ td {
 }
 
 
+    @media print {
+  body {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .calendar-page {
+    page-break-after: always;
+    width: 100vw; /* أو ثابت زي A4 landscape */
+    min-height: 100vh;
+    overflow: hidden;
+  }
+
+  .month {
+    break-inside: avoid;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .calendar-page {
+    transform: scale(0.9);
+    transform-origin: top center;
+    margin-bottom: 60px;
+  }
+}
+
+
   </style>
 </head>
 <body>
@@ -684,6 +711,26 @@ allIcons.forEach(icon => {
     });
 
     applyColor();
+
+
+
+
+    document.getElementById("downloadBtn").addEventListener("click", () => {
+  const element = document.getElementById("content");
+  element.style.width = '1123px'; // A4 landscape عرض بالبكسل
+  element.style.maxWidth = 'none'; // يمنع التضييق
+
+  const opt = {
+    margin: 0.5,
+    filename: 'my_calendar.pdf',
+    image: { type: 'jpeg', quality: 1 },
+    html2canvas: { scale: 2, useCORS: true },
+    jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
+  };
+
+  html2pdf().set(opt).from(element).save();
+});
+
   </script>
 </body>
 </html>
