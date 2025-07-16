@@ -630,6 +630,35 @@ allIcons.forEach(icon => {
     });
 
     applyColor();
+
+
+
+
+
+
+
+      document.getElementById("downloadBtn").addEventListener("click", () => {
+  const element = document.getElementById("content");
+
+  // ثبتي العرض مؤقتًا عشان ما يطيح المحتوى
+  element.style.width = '1122px'; // عرض A4 landscape
+  element.style.maxWidth = 'unset';
+
+  const opt = {
+    margin: 0,
+    filename: 'my_calendar.pdf',
+    image: { type: 'jpeg', quality: 1 },
+    html2canvas: {
+      scale: 2,
+      useCORS: true,
+      logging: true,
+      windowWidth: 1122 // نفس العرض المثبت
+    },
+    jsPDF: { unit: 'px', format: [1122, 793], orientation: 'landscape' }
+  };
+
+  html2pdf().set(opt).from(element).save();
+});
   </script>
 </body>
 </html>
