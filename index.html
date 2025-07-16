@@ -377,7 +377,7 @@ td {
 }
 
 
-    @media print {
+   @media print {
   body {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
@@ -385,9 +385,11 @@ td {
 
   .calendar-page {
     page-break-after: always;
-    width: 100vw; /* أو ثابت زي A4 landscape */
-    min-height: 100vh;
-    overflow: hidden;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    width: 100%;
+    max-width: 100%;
+    min-height: 600px;
   }
 
   .month {
@@ -397,7 +399,7 @@ td {
 
 @media screen and (max-width: 768px) {
   .calendar-page {
-    transform: scale(0.9);
+    transform: scale(0.85);
     transform-origin: top center;
     margin-bottom: 60px;
   }
@@ -714,6 +716,31 @@ allIcons.forEach(icon => {
 
 
 
+
+
+
+    document.getElementById("downloadBtn").addEventListener("click", () => {
+  const element = document.getElementById("content");
+
+  // ثبتي العرض مؤقتًا عشان ما يطيح المحتوى
+  element.style.width = '1122px'; // عرض A4 landscape
+  element.style.maxWidth = 'unset';
+
+  const opt = {
+    margin: 0,
+    filename: 'my_calendar.pdf',
+    image: { type: 'jpeg', quality: 1 },
+    html2canvas: {
+      scale: 2,
+      useCORS: true,
+      logging: true,
+      windowWidth: 1122 // نفس العرض المثبت
+    },
+    jsPDF: { unit: 'px', format: [1122, 793], orientation: 'landscape' }
+  };
+
+  html2pdf().set(opt).from(element).save();
+});
 
    
 
