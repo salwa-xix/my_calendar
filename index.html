@@ -715,21 +715,7 @@ allIcons.forEach(icon => {
 
 
 
-    document.getElementById("downloadBtn").addEventListener("click", () => {
-  const element = document.getElementById("content");
-  element.style.width = '1123px'; // A4 landscape عرض بالبكسل
-  element.style.maxWidth = 'none'; // يمنع التضييق
-
-  const opt = {
-    margin: 0.5,
-    filename: 'my_calendar.pdf',
-    image: { type: 'jpeg', quality: 1 },
-    html2canvas: { scale: 2, useCORS: true },
-    jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
-  };
-
-  html2pdf().set(opt).from(element).save();
-});
+   
 
   </script>
 </body>
