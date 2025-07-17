@@ -589,23 +589,28 @@ td {
     const colorInput = document.getElementById("color");
 
     function applyColor() {
-      const color = colorInput.value;
-      document.querySelectorAll(".month").forEach(month => {
-        month.style.borderColor = color;
-      });
-      document.querySelectorAll("th, td").forEach(cell => {
-        cell.style.color = color;
-        cell.style.borderColor = color;
-      });
-      document.querySelectorAll(".month h2").forEach(h => {
-        h.style.color = color;
-        h.style.borderBottomColor = color;
-      });
-    
-    
-    document.documentElement.style.setProperty('--main-color', color);
-    document.documentElement.style.setProperty('--main-color', color);
+  const color = colorInput.value;
 
+  document.querySelectorAll(".month").forEach(month => {
+    month.style.borderColor = color;
+  });
+
+  document.querySelectorAll("th, td").forEach(cell => {
+    cell.style.color = color;
+    cell.style.borderColor = color;
+  });
+
+  document.querySelectorAll(".month h2").forEach(h => {
+    h.style.color = color;
+    h.style.borderBottomColor = color;
+  });
+
+  // ✅ هذا هو المهم:
+  document.querySelectorAll(".icon").forEach(icon => {
+    icon.style.color = color;
+  });
+
+  document.documentElement.style.setProperty('--main-color', color);
 }
 
 const allIcons = document.querySelectorAll(".icon");
