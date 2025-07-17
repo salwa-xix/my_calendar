@@ -444,29 +444,11 @@ td {
 
    
 .color-card label {
-  font-size: 25px;
+  font-size: 35px;
   font-weight: bold;
   display: inline-block;
 }
-    @media screen and (max-width: 768px) {
-  .color-card label {
-    font-size: 60px !important; /* بالقوة */
-    font-weight: 10000 !important;
-    color: var(--main-color, #4b6cb7);
-  }
-
-  #color {
-    width: 60px;
-    height: 60px;
-  }
-
-  .color-card {
-    gap: 16px;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-}
+   
 
 
 
@@ -477,12 +459,12 @@ td {
 <!-- ✅ أزرار بشكل أنيق -->
 <div class="controls-wrapper">
   <!-- اختيار اللون -->
-  <br>
+
   <div class="color-card">
     <label for="color"> لون التقويم:🎨</label>
     <input type="color" id="color" value="#4b6cb7">
   </div>
-<br>
+
   
   <!-- تحميل PDF -->
   <button id="downloadBtn" class="modern-button">
