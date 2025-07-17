@@ -377,31 +377,33 @@ td {
 }
 
 
-   @media print {
-  body {
+  
+@media print {
+  @page {
+    size: A4 landscape;
+    margin: 0;
+  }
+
+  html, body {
+    width: 100%;
+    height: auto;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
 
   .calendar-page {
     page-break-after: always;
-    page-break-inside: avoid !important;
-    break-inside: avoid !important;
-    width: 80%;
-    max-width: 80%;
-    min-height: 380px;
-  }
-
-  .month {
+    page-break-inside: avoid;
     break-inside: avoid;
+    width: 100%;
+    min-height: 100%;
   }
-}
 
-@media screen and (max-width: 768px) {
-  .calendar-page {
-    transform: scale(0.85);
-    transform-origin: top center;
-    margin-bottom: 60px;
+  .controls-wrapper, .modern-button, .design-links {
+    display: none !important; /* نخفي الأزرار عند الطباعة */
   }
 }
 
