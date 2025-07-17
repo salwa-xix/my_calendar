@@ -408,6 +408,39 @@ td {
 }
 
 
+    @media print {
+  @page {
+    size: A4 landscape;
+    margin: 0;
+  }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0 !important;
+    padding: 0 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .calendar-page {
+    position: relative;
+    border: 8px solid var(--main-color, #4b6cb7) !important; /* البورد الكبير */
+    padding: 20px;
+    box-sizing: border-box;
+    min-height: 100vh;
+    page-break-after: always;
+    background-color: white;
+  }
+
+  .controls-wrapper,
+  .modern-button,
+  .design-links {
+    display: none !important; /* نخفي الأزرار من الطباعة */
+  }
+}
+
+
   </style>
 </head>
 <body>
