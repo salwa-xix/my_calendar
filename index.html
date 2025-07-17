@@ -442,23 +442,32 @@ td {
 
 
 
+   
+.color-card label {
+  font-size: 18px;
+  font-weight: bold;
+  display: inline-block;
+}
     @media screen and (max-width: 768px) {
   .color-card label {
-    font-size: 40px;
-    font-weight: bold;
+    font-size: 40px !important; /* بالقوة */
+    font-weight: 900 !important;
     color: var(--main-color, #4b6cb7);
+  }
+
+  #color {
+    width: 60px;
+    height: 60px;
   }
 
   .color-card {
     gap: 16px;
-    margin-bottom: 24px;
-  }
-
-  #color {
-    width: 70px;
-    height: 70px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
   }
 }
+
 
 
   </style>
