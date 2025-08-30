@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<title>جداول المهام الأسبوعية (جاهزة للطباعة)</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --main:#4b6cb7;
+    --ink:#222;
+    --line:#dfdfdf;
+    --paper:#fff;
+  }
+  *{box-sizing:border-box}
+  body{font-family:'Tajawal',system-ui,sans-serif;background:#fafafa;color:var(--ink);margin:0;padding:24px}
+
+  .controls{display:flex;flex-wrap:wrap;gap:12px;align-items:center;background:#fff;padding:12px 16px;border:1px solid #eee;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.04);margin-bottom:16px}
+  .controls .field{display:flex;align-items:center;gap:8px}
+  .controls label{font-weight:700}
+  input[type="number"]{width:90px;padding:8px 10px;border-radius:10px;border:1px solid #ddd;font:inherit}
+  input[type="color"]{width:44px;height:34px;border:none;background:none;padding:0;cursor:pointer}
+  button{appearance:none;border:none;cursor:pointer;font:inherit;font-weight:800;padding:10px 16px;border-radius:12px;color:#fff;background:linear-gradient(135deg,var(--main),var(--main));box-shadow:0 6px 16px rgba(75,108,183,.25);transition:transform .15s,box-shadow .15s,opacity .15s}
+  button:hover{transform:translateY(-1px);box-shadow:0 10px 22px rgba(75,108,183,.28)}
+  button.secondary{background:#111;box-shadow:0 6px 16px rgba(0,0,0,.15)}
+  .hint{font-size:13px;color:#666}
+
+  #weeks{display:grid;gap:18px}
+  .week{background:var(--paper);border:1px solid #eee;border-radius:14px;overflow:hidden;page-break-inside:avoid}
+
+  .week-header{
+    display:flex;justify-content:space-between;align-items:flex-end;gap:12px;
+    padding:14px 16px;
+    background:linear-gradient(135deg,var(--main),#ffffff);
+    border-bottom:1px solid #eee
+  }
+  .title{display:flex;flex-direction:column}
+  .title .en{font-weight:800;font-size:18px;color:var(--main);letter-spacing:.6px}
+  .title .ar{font-weight:600;font-size:14px;color:#666}
+  .badge-demo{font-size:12px;font-weight:800;color:#b34;background:#fdecec;border:1px solid #f3bbbb;padding:3px 8px;border-radius:999px}
+
+  .table-wrap{padding:12px 12px 8px}
+  table{width:100%;border-collapse:separate;border-spacing:8px;table-layout:fixed}
+  th,td{border:1px solid var(--line);border-radius:10px;background:#fff;vertical-align:top;text-align:right}
+
+  th{
+    background:var(--main);
+    color:#fff;
+    font-weight:800;letter-spacing:.3px;padding:10px;text-align:center
+  }
+
+  td{
+    height:170px;padding:8px 10px;position:relative;
+    background:
+      linear-gradient(#fff,#fff) padding-box,
+      repeating-linear-gradient(to bottom,transparent 0 28px,rgba(0,0,0,.05) 28px 29px) border-box
+  }
+
+  .goals-wrap{padding:0 12px 14px}
+  .goals{
+    border:1px dashed var(--main);
+    border-radius:10px;padding:10px 12px;
+    background:
+      linear-gradient(#fff,#fff) padding-box,
+      repeating-linear-gradient(to bottom,transparent 0 22px,rgba(0,0,0,.06) 22px 23px) border-box
+  }
+  .goals h4{margin:0 0 8px;font-size:13px;color:var(--main)}
+
+  @media print{
+    @page{size:A4 landscape;margin:10mm}
+    body{padding:0;background:#fff}
+    .controls{display:none!important}
+    .week{break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+
+<div class="controls">
+  <div class="field">
+    <label for="weeksCount">عدد الأسابيع:</label>
+    <input id="weeksCount" type="number" min="1" max="24" value="4">
+    <span class="hint">من 1 إلى 24</span>
+  </div>
+  <div class="field">
+    <label for="color">اللون:</label>
+    <input id="color" type="color" value="#4b6cb7">
+  </div>
+  <button id="gen">انشاء</button>
+  <button id="download" class="secondary">تحميل PDF</button>
+  <span id="status" class="hint"></span>
+</div>
+
+<div id="weeks" aria-live="polite"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+  const weeksEl = document.getElementById('weeks');
+  const colorEl = document.getElementById('color');
+  const weeksCountEl = document.getElementById('weeksCount');
+  const statusEl = document.getElementById('status');
+
+  const days = ['Sun','Mon','Tue','Wed','Thu','Fri'];
+  let generated = false;
+
+  function setColor(c){
+    document.documentElement.style.setProperty('--main', c);
+  }
+
+  function weekBlock(i, demo=false){
+    const wrap = document.createElement('section');
+    wrap.className = 'week';
+    wrap.innerHTML = `
+      <div class="week-header">
+        <div class="title">
+          <span class="en">WEEK ${i}</span>
+          <span class="ar">الأسبوع رقم ${i}</span>
+        </div>
+        ${demo ? `<span class="badge-demo">معاينة فقط</span>` : ``}
+      </div>
+      <div class="table-wrap">
+        <table dir="ltr">
+          <thead>
+            <tr>${days.map(d=>`<th>${d}</th>`).join('')}</tr>
+          </thead>
+          <tbody>
+            <tr>
+              ${days.map(()=>`<td></td>`).join('')}
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="goals-wrap">
+        <div class="goals">
+          <h4>الأهداف الأسبوعية</h4>
+          <div style="height:220px"></div>
+        </div>
+      </div>
+    `;
+    return wrap;
+  }
+
+  function renderPreview(){
+    weeksEl.innerHTML = '';
+    weeksEl.appendChild(weekBlock(1, true));
+    generated = false;
+    statusEl.textContent = 'هذه معاينة. اختار عدد الأسابيع ثم اضغط "انشاء".';
+  }
+
+  function generate(){
+    const n = Math.max(1, Math.min(24, parseInt(weeksCountEl.value||'1',10)));
+    weeksEl.innerHTML = '';
+    for(let i=1;i<=n;i++){ weeksEl.appendChild(weekBlock(i)); }
+    generated = true;
+    statusEl.textContent = `تم إنشاء ${n} أسبوعًا. الآن يمكنك التحميل.`;
+  }
+
+  function download(){
+    if(!generated){
+      alert('تنبيه: هذه مجرد معاينة. فضلاً اختار عدد الأسابيع واضغط "انشاء" أولاً.');
+      return;
+    }
+    setColor(colorEl.value);
+    const opt = {
+      margin:[8,8,8,8],
+      filename:'weekly_tasks.pdf',
+      image:{type:'jpeg',quality:0.98},
+      html2canvas:{scale:2,useCORS:true},
+      jsPDF:{unit:'mm',format:'a4',orientation:'landscape'}
+    };
+    html2pdf().set(opt).from(weeksEl).save();
+  }
+
+  document.getElementById('gen').addEventListener('click', generate);
+  document.getElementById('download').addEventListener('click', download);
+  colorEl.addEventListener('input', e=> setColor(e.target.value));
+
+  setColor(colorEl.value);
+  renderPreview();
+</script>
+</body>
+</html>
